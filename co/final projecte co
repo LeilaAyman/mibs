@@ -1,0 +1,239 @@
+#$s0 array 1(1,2,3,4 ,5,6,7,8,9,10,11,12,13,14,15) 
+#$s1 array 2([1, 2, 4, 8, 9, 5, 10, 11, 3, 6, 12, 13, 7, 14, 15]
+#there are 4 levels (level0 , level 1, level 2,level 3,)
+
+.data
+array1: .word 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+array2: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0    # Space for 15 integers (15 * 4 bytes)
+target:3
+
+.text
+
+
+main:
+    la $a0,array1      # Load address of array1 into $s0
+    la $a1,array2     # Load address of array2 into $s1
+    la $s2,target
+    lw $a2,0($s2)
+    add $s0,$a0,$zero
+    addi $sp, $sp, -56     # Adjust stack pointer to allocate space for 15 registers
+    sw $t0, 0($sp)      # Save $t0 on the stack
+    sw $t1, 4($sp)      # Save $t1 on the stack
+    sw $t3, 8($sp)      # Save $t3 on the stack
+    sw $t4, 12($sp)     # Save $t4 on the stack
+    sw $t5, 16($sp)     # Save $t5 on the stack
+    sw $t8, 20($sp)     # Save $t8 on the stack
+    sw $s0, 24($sp)     # Save $s0 on the stack
+    sw $s1, 28($sp)     # Save $s1 on the stack
+    sw $s2, 32($sp)     # Save $s2 on the stack
+    sw $s5, 36($sp)     # Save $s5 on the stack
+    sw $s6, 40($sp)     # Save $s6 on the stack
+    sw $s7, 44($sp)     # Save $s7 on the stack
+    sw $a1, 48($sp)     # Save $a1 on the stack
+    sw $ra, 52($sp)     # Save $ra on the stack   
+          
+   j procedure3
+#$s0 array 1(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) 
+#$s1 array 2([1, 2, 4, 8, 9, 5, 10, 11, 3, 6, 12, 13, 7, 14, 15]
+
+ procedure1:
+    # Copy values from array1 to array2 based on Representation 2
+    # Assuming $s0 is the base address of array1 and $s1 is the base address of array2
+
+# Assuming $s0 is the base address of array1 and $a1 is the base address of array2
+
+lw $t0, 0($s0)       # Load array1[0] (1)
+sw $t0, 0($a1)       # Store in array2[0]
+
+lw $t0, 4($s0)       # Load array1[1] (2)
+sw $t0, 4($a1)       # Store in array2[1]
+
+lw $t0, 12($s0)      # Load array1[3] (4)
+sw $t0, 8($a1)       # Store in array2[2]
+
+lw $t0, 28($s0)      # Load array1[7] (8)
+sw $t0, 12($a1)      # Store in array2[3]
+
+lw $t0, 32($s0)      # Load array1[8] (9)
+sw $t0, 16($a1)      # Store in array2[4]
+
+lw $t0, 16($s0)      # Load array1[4] (5)
+sw $t0, 20($a1)      # Store in array2[5]
+
+lw $t0, 36($s0)      # Load array1[9] (10)
+sw $t0, 24($a1)      # Store in array2[6]
+
+lw $t0, 40($s0)      # Load array1[10] (11)
+sw $t0, 28($a1)      # Store in array2[7]
+
+lw $t0, 8($s0)       # Load array1[2] (3)
+sw $t0, 32($a1)      # Store in array2[8]
+
+lw $t0, 20($s0)      # Load array1[5] (6)
+sw $t0, 36($a1)      # Store in array2[9]
+
+lw $t0, 44($s0)      # Load array1[11] (12)
+sw $t0, 40($a1)      # Store in array2[10]
+
+lw $t0, 48($s0)      # Load array1[12] (13)
+sw $t0, 44($a1)      # Store in array2[11]
+
+lw $t0, 24($s0)      # Load array1[6] (7)
+sw $t0, 48($a1)      # Store in array2[12]
+
+lw $t0, 52($s0)      # Load array1[13] (14)
+sw $t0, 52($a1)      # Store in array2[13]
+
+lw $t0, 56($s0)      # Load array1[14] (15)
+sw $t0, 56($a1)      # Store in array2[14]
+ 
+
+
+
+
+
+    jr $ra
+procedure2:
+    # Copy values from array2 to array1 based on the given mapping
+    #$s1 array 1(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15) 
+#$s0 array 2([1, 2, 4, 8, 9, 5, 10, 11, 3, 6, 12, 13, 7, 14, 15].
+    # Copy values from array2 to array1 based on the given mapping
+       lw $t0, 0($s0)      # Load array2[0] (1)
+    sw $t0, 0($a1)      # Store in array1[0]
+
+    lw $t0, 4($s0)      # Load array2[1] (2)
+    sw $t0, 4($a1)      # Store in array1[1]
+
+    lw $t0, 8($s0)      # Load array2[2] (4)
+    sw $t0, 12($a1)     # Store in array1[3]
+
+    lw $t0, 12($s0)     # Load array2[3] (8)
+    sw $t0, 28($a1)     # Store in array1[7]
+
+    lw $t0, 16($s0)     # Load array2[4] (9)
+    sw $t0, 32($a1)     # Store in array1[8]
+
+    lw $t0, 20($s0)     # Load array2[5] (5)
+    sw $t0, 16($a1)     # Store in array1[4]
+
+    lw $t0, 24($s0)     # Load array2[6] (10)
+    sw $t0, 36($a1)     # Store in array1[9]
+
+    lw $t0, 28($s0)     # Load array2[7] (11)
+    sw $t0, 40($a1)     # Store in array1[10]
+
+    lw $t0, 32($s0)     # Load array2[8] (3)
+    sw $t0, 8($a1)      # Store in array1[2]
+
+    lw $t0, 36($s0)     # Load array2[9] (6)
+    sw $t0, 20($a1)     # Store in array1[5]
+
+    lw $t0, 40($s0)     # Load array2[10] (12)
+    sw $t0, 44($a1)     # Store in array1[11]
+
+    lw $t0, 44($s0)     # Load array2[11] (13)
+    sw $t0, 48($a1)     # Store in array1[12]
+
+    lw $t0, 48($s0)     # Load array2[12] (7)
+    sw $t0, 24($a1)     # Store in array1[6]
+
+    lw $t0, 52($s0)     # Load array2[13] (14)
+    sw $t0, 52($a1)     # Store in array1[13]
+
+    lw $t0, 56($s0)     # Load array2[14] (15)
+    sw $t0, 56($a1)     # Store in array1[14]
+    add $s0,$a1,$zero
+
+    jr $ra               # Return from main
+
+ procedure3:
+    li $t1, 0         # i = 0 (index of the list)
+    li $t5, 15        # Length of the list (assuming it has 15 elements)
+    add $t3, $a2, $zero  # Load the value to search for
+
+loop:
+    beq $t1, $t5, not_found  # If i == length of the list, value not found, exit loop
+
+    lw $t4, 0($s0)    # Load the element of the list at index i
+
+    # C1ompare the value with the element of the list
+    beq $t4, $t3, found  # If value found, go to found label
+
+    # If value not found, increment i and level, and continue looping
+    addi $t1, $t1, 1   # Increment i
+    addi $s0, $s0, 4   # Move to the next element of the list
+      
+    j loop             # Jump back to the beginning of the loop
+
+found:
+    li $s7, 1         # Value found indicator
+    li $s5, 2         # Comparison value 1
+    li $s6, 7        # Comparison value 2
+
+    # Check different conditions based on the index
+    beq $t1, $zero, label1
+    sle $t8, $t1, $s5
+    beq $t8, $s7, label2
+    slt $t8, $t1, $s6
+    beq $t8, $s7, check2
+    j label4
+
+check2:
+    slt $t5, $s5, $t1
+    beq $t5, $s7, label3
+
+label1:
+    li $v0, 0         # Return 0 if index is 0
+    j end
+
+label2:
+    li $v0, 1         # Return 1 if index is less than 2
+    j end
+
+label3:
+    li $v0, 2         # Return 2 if index is between 2 and 6
+    j end
+
+label4:
+    li $v0, 3         # Return 3 if index is greater than 6
+    j end
+
+not_found:
+    li $v0, -1        # Value not found indicator
+    j end
+
+end:
+lw $ra, 52($sp)     # Restore $ra from the stack
+    lw $a1, 48($sp)     # Restore $a1 from the stack
+    lw $s7, 44($sp)     # Restore $s7 from the stack
+    lw $s6, 40($sp)     # Restore $s6 from the stack
+    lw $s5, 36($sp)     # Restore $s5 from the stack
+    lw $s2, 32($sp)     # Restore $s2 from the stack
+    lw $s1, 28($sp)     # Restore $s1 from the stack
+    lw $s0, 24($sp)     # Restore $s0 from the stack
+    lw $t8, 20($sp)     # Restore $t8 from the stack
+    lw $t5, 16($sp)     # Restore $t5 from the stack
+    lw $t4, 12($sp)     # Restore $t4 from the stack
+    lw $t3, 8($sp)      # Restore $t3 from the stack
+    lw $t1, 4($sp)      # Restore $t1 from the stack
+    lw $t0, 0($sp)      # Restore $t0 from the stack
+    addi $sp, $sp, 56         # Adjust stack pointer to deallocate space for 15 registers
+    jr $ra            # Return to the calling routine
+
+procedure4:
+ jal procedure2
+ jal procedure3
+ jr $ra
+     
+    
+    
+    
+
+
+
+
+
+
+
+
+
